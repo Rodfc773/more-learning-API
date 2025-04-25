@@ -1,0 +1,29 @@
+networks:
+  more_learning:
+    driver: bridge
+
+volumes:
+  postgresql_data:
+
+services:
+  postgres-db:
+    image: postgres:latest
+    ports:
+      - 5432-5432
+    networks:
+      more_learning:
+
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data
+
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: more_learning
+    container_name: postgres-db
+
+    restart: always
+
+  mongo-db:
+    image: mongo:latest
+
