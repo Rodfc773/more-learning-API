@@ -18,5 +18,7 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+      - name: Package Installation
+        run: mvn clean install -DskipTests
       - name: Running Tests
         run: mvn test
