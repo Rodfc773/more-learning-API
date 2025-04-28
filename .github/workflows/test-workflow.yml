@@ -9,6 +9,12 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    env:
+      DB_URL: ${{secrets.DB_URL}}
+      DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+      DB_USER: ${{secrets.DB_USER}}
+      APP_PORT: ${{secrets.APP_PORT}}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
