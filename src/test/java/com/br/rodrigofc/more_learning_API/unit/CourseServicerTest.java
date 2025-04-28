@@ -10,9 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.UUID;
@@ -43,5 +41,29 @@ public class CourseServicerTest {
         Assertions.assertNotNull(testObject);
         Assertions.assertEquals("Course Test", testObject.getName());
         verify(courseRepository, times(1)).save(any(CourseEntity.class));
+    }
+    @Test
+    @DisplayName("Should not create a course if the name was not sent")
+    public void shouldNotCreateCourseWithoutName(){
+
+        CourseEntity entityTest = CourseEntity.builder().category("test fail").description("test fail").id(UUID.randomUUID()).build();
+
+        try {
+            courseService.create(entityTest);
+        } catch (Exception e) {
+            Assertions.assertInstanceOf(Exception.class, e);
+        }
+    }
+
+    @Test
+    @DisplayName("Should not create a course if the category was not sent")
+    public void shouldNotCreateCourseWithoutCategory(){
+
+        CourseEntity entityTest = CourseEntity.builder().name("test fail").description("test fail").id(UUID.randomUUID()).build();
+        try {
+            courseService.create(entityTest);
+        } catch (Exception e) {
+            Assertions.assertInstanceOf(Exception.class, e);
+        }
     }
 }
