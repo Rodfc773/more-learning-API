@@ -13,6 +13,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.TestPropertySource;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -65,5 +67,38 @@ public class CourseServicerTest {
         } catch (Exception e) {
             Assertions.assertInstanceOf(Exception.class, e);
         }
+    }
+    @Test
+    @DisplayName("Should not create a course if the description was not sent")
+    public void shouldNotCreateCourseIfDescriptionIsMissing(){
+
+        CourseEntity entityTest = CourseEntity.builder().name("test fail").category("test fail").build();
+
+        try{
+            courseService.create(entityTest);
+
+        } catch (Exception e) {
+            Assertions.assertInstanceOf(Exception.class, e);
+        }
+    }
+
+    @Test
+    @DisplayName("Should return a empty list or a list with the courses")
+    public void shouldReturnACourseList(){
+
+        UUID id = UUID.randomUUID();
+        CourseEntity courseExample = CourseEntity.builder().name("teste").description("test").category("test").id(id).build();
+
+        List<CourseEntity> courseList = new ArrayList<>();
+
+        courseList.add(courseExample);
+
+        when(courseRepository.findAll()).thenReturn(courseList);
+
+        var response = courseService.getAll();
+
+        Assertions.assertNotNull(response);
+
+
     }
 }
