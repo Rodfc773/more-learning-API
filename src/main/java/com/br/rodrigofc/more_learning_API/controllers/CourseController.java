@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/courses")
@@ -35,6 +36,21 @@ public class CourseController {
             return ResponseEntity.ok().body(courseEntityList);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> specificCourse(@PathVariable String id){
+        try{
+
+            UUID courseId = UUID.fromString(id);
+
+            var course = courseService.getOne(courseId);
+
+            return ResponseEntity.ok().body(course);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("error_message: " + e.getMessage());
         }
     }
 }
