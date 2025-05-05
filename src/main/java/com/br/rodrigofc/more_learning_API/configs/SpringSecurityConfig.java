@@ -13,7 +13,7 @@ public class SpringSecurityConfig {
 
     private static final String[] PUBLIC_ROUTES = {
             "/api/v1/courses",
-            "/api/v1/courses/create",
+            "/api/v1/courses/**",
             "/swagger-ui/**",
             "/v3/api-docs/**",
             "/swagger-resources/**",
