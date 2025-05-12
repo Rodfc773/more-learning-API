@@ -1,6 +1,7 @@
 package com.br.rodrigofc.more_learning_API.models;
 
 
+import com.br.rodrigofc.more_learning_API.converters.StringListToArrayPostgresConverter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+
+
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -31,6 +34,8 @@ public class CourseEntity {
     private String description;
 
     @NotBlank
+    @Convert(converter = StringListToArrayPostgresConverter.class)
+    @Column(columnDefinition = "text[]")
     private String category;
 
     @Column(nullable = false, name = "is_active")
