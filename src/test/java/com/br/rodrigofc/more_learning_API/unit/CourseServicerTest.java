@@ -1,5 +1,6 @@
 package com.br.rodrigofc.more_learning_API.unit;
 
+import com.br.rodrigofc.more_learning_API.dtos.CourseResponseDTO;
 import com.br.rodrigofc.more_learning_API.models.CourseEntity;
 import com.br.rodrigofc.more_learning_API.repositories.CourseRepository;
 import com.br.rodrigofc.more_learning_API.services.CourseService;
@@ -33,22 +34,31 @@ public class CourseServicerTest {
     @Test
     @DisplayName("Should create a instance of Course")
     public void shouldCreateCourserWithSuccess(){
-        CourseEntity entityTest = CourseEntity.builder().name("Course Test").category("test").description("test").id(UUID.randomUUID()).build();
+
+        List<String> categories = new ArrayList<>();
+
+        categories.add("test");
+
+        CourseEntity entityTest = CourseEntity.builder().name("Course Test").category(categories).description("test").id(UUID.randomUUID()).build();
 
         when(courseRepository.save(any(CourseEntity.class))).thenReturn(entityTest);
 
         CourseEntity test = new CourseEntity();
-        CourseEntity testObject = courseService.create(test);
+        CourseResponseDTO testObject = courseService.create(test);
 
         Assertions.assertNotNull(testObject);
-        Assertions.assertEquals("Course Test", testObject.getName());
+        Assertions.assertEquals("Course Test", testObject.getCourseName());
         verify(courseRepository, times(1)).save(any(CourseEntity.class));
     }
     @Test
     @DisplayName("Should not create a course if the name was not sent")
     public void shouldNotCreateCourseWithoutName(){
 
-        CourseEntity entityTest = CourseEntity.builder().category("test fail").description("test fail").id(UUID.randomUUID()).build();
+        List<String> categories = new ArrayList<>();
+
+        categories.add("test");
+
+        CourseEntity entityTest = CourseEntity.builder().category(categories).description("test fail").id(UUID.randomUUID()).build();
 
         try {
             courseService.create(entityTest);
@@ -72,7 +82,11 @@ public class CourseServicerTest {
     @DisplayName("Should not create a course if the description was not sent")
     public void shouldNotCreateCourseIfDescriptionIsMissing(){
 
-        CourseEntity entityTest = CourseEntity.builder().name("test fail").category("test fail").build();
+        List<String> categories = new ArrayList<>();
+
+        categories.add("test fail");
+
+        CourseEntity entityTest = CourseEntity.builder().name("test fail").category(categories).build();
 
         try{
             courseService.create(entityTest);
@@ -87,7 +101,12 @@ public class CourseServicerTest {
     public void shouldReturnACourseList(){
 
         UUID id = UUID.randomUUID();
-        CourseEntity courseExample = CourseEntity.builder().name("teste").description("test").category("test").id(id).build();
+
+        List<String> categories = new ArrayList<>();
+
+        categories.add("test");
+
+        CourseEntity courseExample = CourseEntity.builder().name("teste").description("test").category(categories).id(id).build();
 
         List<CourseEntity> courseList = new ArrayList<>();
 
