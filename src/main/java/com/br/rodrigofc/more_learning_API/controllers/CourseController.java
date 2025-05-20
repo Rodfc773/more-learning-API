@@ -24,6 +24,7 @@ public class CourseController {
             var resultTransaction = this.courseService.create(course);
             return ResponseEntity.ok().body(resultTransaction);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }

@@ -5,10 +5,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class CourseUpdateDTO {
+    private String name;
 
-    private String title;
+    private List<String> categories;
+
+    private String description;
+
+    private boolean isActive;
 }

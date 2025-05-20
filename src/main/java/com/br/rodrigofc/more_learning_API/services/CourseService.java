@@ -1,5 +1,6 @@
 package com.br.rodrigofc.more_learning_API.services;
 
+import com.br.rodrigofc.more_learning_API.dtos.CourseResponseDTO;
 import com.br.rodrigofc.more_learning_API.models.CourseEntity;
 import com.br.rodrigofc.more_learning_API.repositories.CourseRepository;
 import com.br.rodrigofc.more_learning_API.exceptions.CourseNotFound;
@@ -15,8 +16,17 @@ public class CourseService {
     @Autowired
     private CourseRepository repository;
 
-    public CourseEntity create(CourseEntity entity){
-        return this.repository.save(entity);
+    public CourseResponseDTO create(CourseEntity entity){
+
+        CourseEntity newCourse =  this.repository.save(entity);
+
+        return CourseResponseDTO.builder()
+                .courseName(newCourse.getName())
+                .description(newCourse.getDescription())
+                .id(newCourse.getId())
+                .createdAt(newCourse.getCreated_at())
+                .updateAt(newCourse.getUpdated_at())
+                .categories(newCourse.getCategory()).build();
     }
 
     public List<CourseEntity> getAll(){
@@ -28,7 +38,16 @@ public class CourseService {
         }
     }
 
-    public CourseEntity getOne(UUID uuid){
-        return repository.findById(uuid).orElseThrow(CourseNotFound::new);
+    public CourseResponseDTO getOne(UUID uuid){
+
+        CourseEntity responseData = repository.findById(uuid).orElseThrow(CourseNotFound::new);
+
+        return CourseResponseDTO.builder()
+                .courseName(responseData.getName())
+                .description(responseData.getDescription())
+                .id(responseData.getId())
+                .createdAt(responseData.getCreated_at())
+                .updateAt(responseData.getUpdated_at())
+                .categories(responseData.getCategory()).build();
     }
 }
