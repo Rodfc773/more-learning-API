@@ -1,5 +1,8 @@
 package com.br.rodrigofc.more_learning_API.controllers;
 
+import com.br.rodrigofc.more_learning_API.dtos.CourseResponseDTO;
+import com.br.rodrigofc.more_learning_API.dtos.CourseUpdateDTO;
+import com.br.rodrigofc.more_learning_API.exceptions.CourseNotFound;
 import com.br.rodrigofc.more_learning_API.models.CourseEntity;
 import com.br.rodrigofc.more_learning_API.services.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +27,6 @@ public class CourseController {
             var resultTransaction = this.courseService.create(course);
             return ResponseEntity.ok().body(resultTransaction);
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
@@ -52,6 +54,21 @@ public class CourseController {
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("error_message: " + e.getMessage());
+        }
+    }
+    @PatchMapping("/{id}")
+    public ResponseEntity<Object> updateCourse(@PathVariable String id, @RequestBody CourseUpdateDTO dataToBeUpdated){
+
+        try{
+            UUID courseId = UUID.fromString(id);
+
+            CourseResponseDTO responseData = courseService.applyPatchUpdate(courseId, dataToBeUpdated);
+
+            return  ResponseEntity.status(HttpStatus.OK).body(responseData);
+        } catch (CourseNotFound e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 }
