@@ -71,4 +71,20 @@ public class CourseController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteCourse(@PathVariable String id){
+
+        try{
+            UUID courseId = UUID.fromString(id);
+
+            var deletedCourse = courseService.deleteCourse(courseId);
+
+            return ResponseEntity.status(HttpStatus.OK).body(deletedCourse);
+        } catch (CourseNotFound e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 }

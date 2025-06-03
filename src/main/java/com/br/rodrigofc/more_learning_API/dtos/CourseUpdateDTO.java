@@ -16,13 +16,13 @@ import java.util.Optional;
 public class CourseUpdateDTO {
     private Optional<String> name = Optional.empty();
 
-    private Optional<List<String>> categories = Optional.empty();
+    private Optional<List<String>> category = Optional.empty();
 
     private Optional<String> description = Optional.empty();
 
     private Optional<Boolean> isActive = Optional.empty();
 
     public boolean isAnythingToUpdate(){
-        return  name.isPresent() || categories.isPresent() || description.isPresent() || isActive.isPresent();
+        return  name.isPresent() || category.isPresent() || description.isPresent() || isActive.isPresent();
     }
 }

@@ -57,7 +57,7 @@ public class CourseService {
         CourseEntity course = repository.findById(targetId).orElseThrow(CourseNotFound::new);
 
         dataToUpdate.getName().ifPresent(course::setName);
-        dataToUpdate.getCategories().ifPresent(course::setCategory);
+        dataToUpdate.getCategory().ifPresent(course::setCategory);
         dataToUpdate.getIsActive().ifPresent(course::setActive);
         dataToUpdate.getDescription().ifPresent(course::setDescription);
 

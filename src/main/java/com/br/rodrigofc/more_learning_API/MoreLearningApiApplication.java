@@ -9,5 +9,4 @@ public class MoreLearningApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MoreLearningApiApplication.class, args);
 	}
-
 }
