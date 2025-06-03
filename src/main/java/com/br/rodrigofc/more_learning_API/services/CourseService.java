@@ -1,6 +1,7 @@
 package com.br.rodrigofc.more_learning_API.services;
 
 import com.br.rodrigofc.more_learning_API.dtos.CourseResponseDTO;
+import com.br.rodrigofc.more_learning_API.dtos.CourseUpdateDTO;
 import com.br.rodrigofc.more_learning_API.models.CourseEntity;
 import com.br.rodrigofc.more_learning_API.repositories.CourseRepository;
 import com.br.rodrigofc.more_learning_API.exceptions.CourseNotFound;
@@ -49,5 +50,40 @@ public class CourseService {
                 .createdAt(responseData.getCreated_at())
                 .updateAt(responseData.getUpdated_at())
                 .categories(responseData.getCategory()).build();
+    }
+
+    public CourseResponseDTO applyPatchUpdate(UUID targetId, CourseUpdateDTO dataToUpdate){
+
+        CourseEntity course = repository.findById(targetId).orElseThrow(CourseNotFound::new);
+
+        dataToUpdate.getName().ifPresent(course::setName);
+        dataToUpdate.getCategory().ifPresent(course::setCategory);
+        dataToUpdate.getIsActive().ifPresent(course::setActive);
+        dataToUpdate.getDescription().ifPresent(course::setDescription);
+
+        repository.save(course);
+
+        return CourseResponseDTO.builder()
+                .courseName(course.getName())
+                .description(course.getDescription())
+                .id(course.getId())
+                .createdAt(course.getCreated_at())
+                .updateAt(course.getUpdated_at())
+                .categories(course.getCategory()).build();
+    }
+
+    public CourseResponseDTO deleteCourse(UUID targetId){
+
+        CourseEntity course = repository.findById(targetId).orElseThrow(CourseNotFound::new);
+
+        repository.deleteById(course.getId());
+
+        return CourseResponseDTO.builder()
+                .courseName(course.getName())
+                .description(course.getDescription())
+                .id(course.getId())
+                .createdAt(course.getCreated_at())
+                .updateAt(course.getUpdated_at())
+                .categories(course.getCategory()).build();
     }
 }
